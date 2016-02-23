@@ -20,14 +20,18 @@ void input(char str[])
 	fgets(str, MAX_PATH, stdin);
 }
 
-bool check(char input[])
+bool check(char str[])
 {
-	for (int i = 0; input[i] != '\0'; i++)
+	for (int i = 0; str[i] != '\0'; i++)
 	{
-		switch (input[i])
+		switch (str[i])
 		{
-			case 'x':
-			case 'c':
+			case '*':
+			case '?':
+			case '"':
+			case '<':
+			case '>':
+			case '|':
 				return false;
 		}
 	}
