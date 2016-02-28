@@ -67,14 +67,7 @@ bool check(char string[])
 
 void process(char string[], char delim)
 {
-	int position = 0;
-	char *part = stok(string, delim, &position);
-
-	while (part != NULL)
-	{
-		output(part);
-		part = stok(string, delim, &position);
-	}
+	
 }
 
 void output(char string[])
