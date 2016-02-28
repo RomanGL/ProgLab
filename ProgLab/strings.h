@@ -1,2 +1,2 @@
-int slen(char str[]);
-void stok(char res[[]])
+int slen(char string[]);
+char *stok(char string[], char delim, int *position);

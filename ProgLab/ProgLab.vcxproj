@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c.cpp" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="strings.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="strings.h" />
