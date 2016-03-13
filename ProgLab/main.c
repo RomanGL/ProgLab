@@ -67,7 +67,11 @@ bool check(char string[])
 
 void process(char string[], char delim)
 {
-	
+	char *token = stringToken(string, delim);
+	while (token != NULL)
+	{
+		token = stringToken(NULL, delim);
+	}
 }
 
 void output(char string[])

@@ -13,14 +13,31 @@ int stringLength(char string[])
 char *stringToken(char string[], char delim)
 {
 	static char *splitString;
+	char *token;
 
-	if (string != NULL) 
+	if (string != NULL)
 		splitString = string;
 
 	if (splitString == NULL)
 		return NULL;
 
-	return NULL;
+	int i = 0;
+	while (*(splitString + i) != '\0')
+	{
+		if (*(splitString + i) == delim)
+		{
+			token = splitString;
+			*(splitString += i) = '\0';			
+			splitString += 1;
+
+			return token;
+		}
+		i++;
+	}
+
+	token = splitString;
+	splitString = NULL;
+	return token;
 }
 
 int stringIndexOf(char string[], char symbol)
