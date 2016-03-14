@@ -67,12 +67,15 @@ bool check(char string[])
 
 void process(char string[], char delim)
 {
-	bool ends = stringEndWith(string, "123");
+	int i = -1;
 	char *token = stringToken(string, delim);
 	while (token != NULL)
-	{
-		token = stringToken(NULL, delim);
+	{		
+		i++;
+		token = stringToken(NULL, delim);		
 	}
+
+	stringRestoreToken(string, i, delim);
 }
 
 void output(char string[])

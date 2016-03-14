@@ -43,6 +43,22 @@ char *stringToken(char string[], char delim)
 	return token;
 }
 
+// Восстанавливает строку после stringToken.
+void stringRestoreToken(char string[], int count, char delim)
+{
+	int i = 0;
+	while (count > 0)
+	{
+		if (string[i] == '\0')
+		{
+			string[i] = delim;
+			count--;
+		}
+
+		i++;
+	}
+}
+
 // Возвращает индекс первого вхождения указанного символа в строку или -1 в противном случае.
 int stringIndexOf(char string[], char symbol)
 {

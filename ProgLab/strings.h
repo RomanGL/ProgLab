@@ -7,6 +7,9 @@ int stringLength(char string[]);
 // Передать строку при первом вызове и NULL при последующих для текущей строки.
 char *stringToken(char string[], char delim);
 
+// Восстанавливает строку после stringToken.
+void stringRestoreToken(char string[], int count, char delim);
+
 // Возвращает индекс первого вхождения указанного символа в строку или -1 в противном случае.
 int stringIndexOf(char string[], char symbol);
 
