@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="path.c" />
     <ClCompile Include="strings.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="path.h" />
     <ClInclude Include="strings.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

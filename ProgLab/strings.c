@@ -11,6 +11,19 @@ int stringLength(char string[])
 	return i;
 }
 
+// Удаляет перенос строки.
+void stringRemoveNewLine(char string[])
+{
+	int i = 0;
+	while (string[i] != '\0')
+	{
+		if (string[i] == '\n')
+			string[i] = '\0';
+
+		i++;
+	}
+}
+
 // Возвращает указатель на начало блока, отделенного разделителем.
 // Передать строку при первом вызове и NULL при последующих для текущей строки.
 char *stringToken(char string[], char delim)
@@ -102,15 +115,60 @@ void stringCopy(char destStr[], char sourceStr[])
 	destStr[i] = '\0';
 }
 
+// Заменяет все вхождения символа symbol на replaceTo в указанной строке.
+void stringReplace(char string[], char symbol, char replaceTo)
+{
+	if (symbol == '\0' || replaceTo == '\0')
+		return;
+
+	int i = 0;
+	while (string[i] != '\0')
+	{
+		if (string[i] == symbol)
+			string[i] = replaceTo;
+		i++;
+	}
+}
+
+// Приводит символ к нижнему регистру.
+char toLowerCase(char symbol)
+{
+	if (symbol >= 'A' && symbol <= 'Z')
+		return symbol + ('a' - 'A');
+	return symbol;
+}
+
+// Приводит символ к верхнему регистру.
+char toUpperCase(char symbol)
+{
+	if (symbol >= 'a' && symbol <= 'z')
+		return symbol - ('a' - 'A');
+	return symbol;
+}
+
+// Является ли символ буквой.
+bool isLetter(char symbol)
+{
+	if (symbol >= 'A' && symbol <= 'Z')
+		return true;
+	if (symbol >= 'a' && symbol <= 'z')
+		return true;
+
+	return false;
+}
+
 // Возвращает true, если начало строки совпадает с token, иначе false.
-bool stringStartWith(char string[], char token[])
+bool stringStartWith(char string[], char token[], bool ignoreCase)
 {
 	int tokenLength = stringLength(token);
 	for (int i = 0; i < tokenLength; i++)
 	{
 		if (string[i] == '\0')
 			return false;
-		if (string[i] != token[i])
+
+		if (ignoreCase && toLowerCase(string[i]) != toLowerCase(token[i]))
+			return false;
+		else if (string[i] != token[i])
 			return false;
 	}
 
@@ -118,7 +176,7 @@ bool stringStartWith(char string[], char token[])
 }
 
 // Возвращает true если конец строки совпадает с token, иначе false.
-bool stringEndWith(char string[], char token[])
+bool stringEndWith(char string[], char token[], bool ignoreCase)
 {
 	int strLength = stringLength(string) - 1;
 	int tokenLength = stringLength(token) - 1;
@@ -128,7 +186,9 @@ bool stringEndWith(char string[], char token[])
 
 	while (tokenLength >= 0)
 	{
-		if (string[strLength] != token[tokenLength])
+		if (ignoreCase && toLowerCase(string[strLength]) != toLowerCase(token[tokenLength]))
+			return false;
+		else if (string[strLength] != token[tokenLength])
 			return false;
 
 		strLength--;

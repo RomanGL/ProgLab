@@ -2,80 +2,85 @@
 #include <stdbool.h>
 #include <conio.h>
 #include "strings.h"
+#include "path.h"
 
-#define MAX_PATH 261
+#define MAX_PATH 260
 #define MAX_COUNT 10
 
 void input(char string[], char *delim);
-bool check(char string[]);
 void process(char string[], char delim);
 void output(char string[]);
 
 int main()
 {
 	char delim;
-	char str[MAX_PATH * MAX_COUNT];
+	char str[MAX_PATH * MAX_COUNT + 10];
+
 	input(str, &delim);
-
-	bool checkResult = check(&str);
-	if (!checkResult)
-	{
-		printf("Error: unsupported symbol");
-		_getch();
-		exit();
-	}
-
 	process(str, delim);
 
 	_getch();
+	return 0;
 }
 
 void input(char string[], char *delim)
 {
-	printf("Input delim: ");
+	printf("Input delimiter: ");
 	scanf_s("%c%*c", delim);
 
-	printf("Input path:\n");
-	fgets(string, MAX_PATH * MAX_COUNT, stdin);
-}
-
-bool check(char string[])
-{
-	int i = 0;
-	while (string[i] != '\0')
-	{
-		if (string[i] == '\n') string[i] = '\0';
-		else
-		{
-			switch (string[i])
-			{
-				case '*':
-				case '?':
-				case '"':
-				case '<':
-				case '>':
-				case '|':
-					return false;
-			}
-
-			i++;
-		}
-	}
-
-	return true;
+	printf("Input path: ");
+	fgets(string, (MAX_PATH * MAX_COUNT) + 9, stdin);
+	stringRemoveNewLine(string);
 }
 
 void process(char string[], char delim)
 {
-	int i = -1;
+	int skipped = 0;
+	int success = 0;
+
+	char *resultCygwin = malloc(sizeof(char) * (MAX_PATH * MAX_COUNT + 10));
+	if (resultCygwin == NULL)
+	{
+		printf("\nError: no enought memory (process)! Can't continue.\n");
+		return;
+	}
+
+	resultCygwin[0] = '\0';
+	char strDelim[2] = { delim };
+
 	char *token = stringToken(string, delim);
 	while (token != NULL)
-	{		
-		i++;
+	{	
+		printf("\nProcessing path: %s\n", token);
+
+		char *cygwin = winToCygwin(token);
+		if (cygwin != NULL)
+		{
+			if (success != 0)
+			{
+				stringConcat(resultCygwin, strDelim);
+				stringConcat(resultCygwin, cygwin);
+			}
+			else
+				stringConcat(resultCygwin, cygwin);
+
+			success++;
+			printf("Success\n");
+		}
+		else
+		{
+			printf("Path skipped.\n");
+			skipped++;
+		}
+
 		token = stringToken(NULL, delim);		
 	}
 
-	stringRestoreToken(string, i, delim);
+	if (skipped > 0)
+		printf("\nNotice! %d paths was skipped due to an error. %d path success.\n", 
+			skipped, success);
+
+	printf("\n**********\n%s\n", resultCygwin);
 }
 
 void output(char string[])
