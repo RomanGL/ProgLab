@@ -27,6 +27,9 @@
     <ClInclude Include="path.h" />
     <ClInclude Include="strings.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{755112CB-E141-442B-97C9-40D1B2B5E676}</ProjectGuid>
     <RootNamespace>ProgLab</RootNamespace>

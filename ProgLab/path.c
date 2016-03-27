@@ -8,9 +8,6 @@
 const char CYGWIN_ROOT[] = "/cygdrive/";
 const int CYGWIN_LENGTH = 10;
 
-bool checkPath(char path[], bool isLinux);
-int getPathType(char path[]);
-
 char *winToCygwin(char path[])
 {
 	int pathType = getPathType(path);
