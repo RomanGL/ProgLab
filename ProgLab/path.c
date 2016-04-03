@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "path.h"
 #include "strings.h"
 
@@ -38,7 +39,11 @@ char *winToCygwin(char path[])
 		return cygwinPath;
 	}
 	else if (pathType == 1)
-		return path;
+	{
+		char *cygwinPath = malloc(sizeof(char) * (stringLength(path) + 1));
+		stringCopy(cygwinPath, path);
+		return cygwinPath;
+	}
 	
 	return NULL;
 }

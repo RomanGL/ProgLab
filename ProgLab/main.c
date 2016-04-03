@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <conio.h>
+#include <stdlib.h>
 #include "strings.h"
 #include "path.h"
 
@@ -18,7 +19,7 @@ int main()
 
 	input(str, &delim);
 	process(str, delim);
-
+	
 	_getch();
 	return 0;
 }
@@ -48,39 +49,53 @@ void process(char string[], char delim)
 	resultCygwin[0] = '\0';
 	char strDelim[2] = { delim };
 
+	int pathsCounter = 0;
 	char *token = stringToken(string, delim);
 	while (token != NULL)
 	{	
-		printf("\nProcessing path: %s\n", token);
-
-		char *cygwin = winToCygwin(token);
-		if (cygwin != NULL)
+		pathsCounter++;
+		if (pathsCounter <= MAX_COUNT)
 		{
-			if (success != 0)
+			printf("\nProcessing path: %s\n", token);
+
+			char *cygwin = winToCygwin(token);
+			if (cygwin != NULL)
 			{
-				stringConcat(resultCygwin, strDelim);
-				stringConcat(resultCygwin, cygwin);
+				if (success != 0)
+				{
+					stringConcat(resultCygwin, strDelim);
+					stringConcat(resultCygwin, cygwin);
+				}
+				else
+					stringConcat(resultCygwin, cygwin);
+
+				free(cygwin);
+				cygwin = NULL;
+
+				success++;
+				output("Success");
 			}
 			else
-				stringConcat(resultCygwin, cygwin);
-
-			success++;
-			printf("Success\n");
+			{
+				output("Path skipped.");
+				skipped++;
+			}
 		}
 		else
-		{
-			printf("Path skipped.\n");
 			skipped++;
-		}
 
 		token = stringToken(NULL, delim);		
 	}
 
+	if (pathsCounter > MAX_COUNT)
+		printf("\nError: max paths number exceeded.");
+
 	if (skipped > 0)
-		printf("\nNotice! %d paths was skipped due to an error. %d path success.\n", 
+		printf("\nNotice! %d paths was skipped due to an error. %d path success.", 
 			skipped, success);
 
-	printf("\n**********\n%s\n", resultCygwin);
+	printf("\n**********\n");
+	output(resultCygwin);
 }
 
 void output(char string[])
