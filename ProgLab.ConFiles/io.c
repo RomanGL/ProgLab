@@ -50,7 +50,6 @@ char *fileReadAllText(char filePath[])
 		position += stringLength(&(result[position]));
 	}
 
-	printf("%s", result);
 	fclose(stream);
 	return result;
 }

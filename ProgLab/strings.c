@@ -26,7 +26,7 @@ void stringRemoveNewLine(char string[])
 
 // Возвращает указатель на начало блока, отделенного разделителем.
 // Передать строку при первом вызове и NULL при последующих для текущей строки.
-char *stringToken(char string[], char delim)
+char *stringToken(char string[], char delim[])
 {
 	static char *splitString;
 	char *token;
@@ -40,14 +40,20 @@ char *stringToken(char string[], char delim)
 	int i = 0;
 	while (*(splitString + i) != '\0')
 	{
-		if (*(splitString + i) == delim)
+		int j = 0;
+		while (delim[j] != '\0')
 		{
-			token = splitString;
-			*(splitString += i) = '\0';
-			splitString += 1;
+			if (*(splitString + i) == delim[j])
+			{
+				token = splitString;
+				*(splitString += i) = '\0';
+				splitString += 1;
 
-			return token;
+				return token;
+			}
+			j++;
 		}
+
 		i++;
 	}
 

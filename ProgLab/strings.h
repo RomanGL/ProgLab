@@ -11,7 +11,7 @@ void stringRemoveNewLine(char string[]);
 char *stringToken(char string[], char delim);
 
 // Восстанавливает строку после stringToken.
-void stringRestoreToken(char string[], int count, char delim);
+void stringRestoreToken(char string[], int count, char delim[]);
 
 // Возвращает индекс первого вхождения указанного символа в строку или -1 в противном случае.
 int stringIndexOf(char string[], char symbol);
