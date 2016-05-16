@@ -33,7 +33,8 @@ void xmlProcessObject(struct XmlNode *parent, char xml[])
 		if (block[0] == '<')
 		{
 			(*parent).name = &(block[1]);
-			continue;
 		}
+
+		block = stringToken(NULL, " \t\n");
 	}
 }

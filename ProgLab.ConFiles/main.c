@@ -1,17 +1,58 @@
-#include <stdbool.h>
+#include <windows.h> 
+#include <tchar.h>
+#include <stdio.h> 
+#include <strsafe.h>
 #include <conio.h>
-#include "../ProgLab/strings.h"
-#include "io.h"
-#include "xml.h"
+#include "..\ProgLab\strings.h"
 
-const char DEFAULT_PATH[] = "D:\\Desktop\\proglab.xml";
-const char DEFAULT_PATH2[] = "C:\\Windows\\WinSxS\\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.10586.168_none_76587b40265ca57e\\GlobalInstallOrder.xml";
+void CreateChildProcess(char filePath[]);
 
-int main()
+int main(int argc, char *argv[])
 {
-	char *data = fileReadAllText(DEFAULT_PATH);
-	bool res = xmlValidate(data);
+	printf_s("Starting XmlParser.exe...\n");
+	CreateChildProcess("D:\\Desktop\\proglab.xml");
+	printf_s("XmlParser completed.\n");
 
 	_getch();
 	return 0;
+}
+
+void CreateChildProcess(char filePath[])
+{
+	PROCESS_INFORMATION piProcInfo;
+	STARTUPINFO siStartInfo;
+
+	ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
+	ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
+	siStartInfo.cb = sizeof(STARTUPINFO);
+
+	siStartInfo.hStdError = GetStdHandle(STD_OUTPUT_HANDLE);
+	siStartInfo.hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	siStartInfo.dwFlags |= STARTF_USESTDHANDLES;
+ 
+	char path[1024] = "XmlParser.exe \0";
+	//stringConcat(&path, filePath);
+
+	bool success = CreateProcess(
+		NULL,
+		path,		   // command line 
+		NULL,          // process security attributes 
+		NULL,          // primary thread security attributes 
+		true,          // handles are inherited 
+		0,             // creation flags 
+		NULL,          // use parent's environment 
+		NULL,          // use parent's current directory 
+		&siStartInfo,  // STARTUPINFO pointer 
+		&piProcInfo    // PROCESS_INFORMATION pointer
+	);
+
+	if (!success)
+		printf_s("Error: Can't start XmlParser.exe.\n");
+	else
+	{
+		WaitForSingleObject(piProcInfo.hProcess, INFINITE);
+	}
+
+	CloseHandle(piProcInfo.hProcess);
+	CloseHandle(piProcInfo.hThread);
 }

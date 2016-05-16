@@ -22,6 +22,8 @@ struct XmlNode
 {
 	char *name;
 	char *value;
+	int childrensCount;
+	int attributesCount;
 	struct XmlAttribute *attributes;
 	struct XmlNode *childrens;
 	struct XmlNode *parent;
